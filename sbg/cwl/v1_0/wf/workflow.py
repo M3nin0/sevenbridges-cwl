@@ -289,7 +289,7 @@ class Workflow(App):
                 )
 
     def add_step(self, step, id=None, in_=None, out=None, expose=None,
-                 expose_except=None, scatter=None, scatter_method=None):
+                 expose_except=None, scatter=None, scatter_method=None, unique_names=True):
         """
         Adds step into workflow.
 
@@ -310,10 +310,11 @@ class Workflow(App):
             if not id:
                 id = k
 
-            i = 0
-            while self.get_input(id) or self.get_output(id):
-                i += 1
-                id = '{}_{}'.format(k, i)
+            if unique_names:
+                i = 0
+                while self.get_input(id) or self.get_output(id):
+                    i += 1
+                    id = '{}_{}'.format(k, i)
 
             label = id
             obj = new_step.run.get_input(k)
